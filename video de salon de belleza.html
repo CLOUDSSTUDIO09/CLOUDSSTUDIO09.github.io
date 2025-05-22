@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #7fbec4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .video-container {
+      width: 90%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: 4px solid white;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <div class="video-container">
+    <video autoplay muted loop playsinline controls controlslist="nodownload">
+      <source src="URL_DEL_VIDEO.mp4" type="video/mp4">
+      Tu navegador no soporta el video HTML5.
+    </video>
+  </div>
+</body>
+</html>

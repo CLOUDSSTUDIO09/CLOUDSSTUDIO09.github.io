@@ -18,30 +18,18 @@
       justify-content: center;
       align-items: center;
       overflow-x: hidden;
-
-      /* FONDO GENERAL DE LA PÁGINA */
       background-color: #ececec;
     }
 
-    /* Contenedor maestro: mantiene la proporción exacta de la mesa de trabajo (720x1000) */
+    /* Contenedor maestro: proporción exacta 720x1000 */
     .invitacion-canvas {
       position: relative;
       width: 100%;
       max-width: 500px;
       aspect-ratio: 720 / 1000;
       overflow: hidden;
+      background-color: #fbfbfb; /* Color base texturizado o blanco papel */
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
-    }
-
-    /* CORRECCIÓN: Fondo ajustado para que cubra todo el lienzo perfectamente */
-    .invitacion-canvas > img.fondo-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: 1;
     }
 
     /* Clase base para todos los objetos SVG posicionados */
@@ -103,6 +91,7 @@
       animation-play-state: paused;
     }
 
+    /* Activación inmediata de las animaciones */
     .invitacion-canvas.listo .svg-item,
     .invitacion-canvas.listo .sello-link {
       animation-play-state: running;
@@ -130,7 +119,7 @@
       animation-delay: 1.4s;
     }
 
-    /* Animación flotante suave de arriba hacia abajo */
+    /* Animación flotante suave */
     @keyframes flotarSuave {
       0% {
         opacity: 0;
@@ -157,9 +146,6 @@
 <body>
 
   <main class="invitacion-canvas">
-    
-    <!-- FONDO CORREGIDO -->
-    <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/fondo.jpg" class="fondo-canvas" alt="Fondo">
 
     <!-- TÍTULO: "UNA CARTA DE AMOR DE:" -->
     <div class="svg-item titulo-svg">
@@ -189,23 +175,12 @@
   </main>
 
   <script>
+    // Activación directa al cargar la página para evitar bloqueos
     window.addEventListener("load", () => {
       const lienzo = document.querySelector(".invitacion-canvas");
-      const imagenes = Array.from(lienzo.querySelectorAll("img"));
-
-      const promesas = imagenes.map(img => {
-        if (img.complete) return Promise.resolve();
-        return new Promise(resolve => {
-          img.onload = resolve;
-          img.onerror = resolve;
-        });
-      });
-
-      Promise.all(promesas).then(() => {
-        setTimeout(() => {
-          lienzo.classList.add("listo");
-        }, 100);
-      });
+      setTimeout(() => {
+        lienzo.classList.add("listo");
+      }, 50);
     });
   </script>
 

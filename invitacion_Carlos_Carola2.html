@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación de Boda - Carlos & Carola</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background-color: #ececec;
+      overflow-x: hidden;
+    }
+
+    /* Contenedor maestro continuo que abarca las 5 secciones con el mismo fondo */
+    .landing-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      background-color: #f8f8f8;
+      /* PEGA AQUÍ EL ENLACE DE TU FONDO LARGO JPG QUE ABARCA LAS 5 SECCIONES */
+      background-image: url("https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/FONDO2-02.jpg");
+      background-size: 100% auto;
+      background-repeat: repeat-y;
+      background-position: top center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       SECCIÓN 1: SOBRE ABIERTO, FOTOGRAFÍAS ENCAJADAS Y RAMAS DECORATIVAS
+       ========================================================================== */
+    .seccion-1 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 720 / 680; /* Proporción exacta de la sección 1 */
+      overflow: hidden;
+    }
+
+    /* 1. Rama decorativa superior derecha (estática) */
+    .s1-rama-superior {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 28%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 2. Rama decorativa bajo la esquina inferior izquierda del sobre (estática) */
+    .s1-rama-inferior {
+      position: absolute;
+      top: 76%;
+      left: 7%;
+      width: 27%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 3. Parte trasera del sobre abierto (estática, detrás de las fotos) */
+    .s1-sobre-trasero {
+      position: absolute;
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 73.5%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 4. Fotos separadas con animación flotante suave de arriba hacia abajo */
+    .s1-foto {
+      position: absolute;
+      z-index: 2; /* Quedan justo entre el sobre trasero (1) y el frontal (3) */
+      opacity: 0;
+      animation: encajarFoto 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-play-state: paused;
+    }
+
+    .s1-foto-izq {
+      top: 13.5%;
+      left: 20.5%;
+      width: 31%;
+      animation-delay: 0.25s;
+    }
+
+    .s1-foto-der {
+      top: 20.5%;
+      left: 44.5%;
+      width: 35.5%;
+      animation-delay: 0.55s;
+    }
+
+    /* 5. Parte delantera/superior del sobre con sello (estática, encima de las fotos) */
+    .s1-sobre-frontal {
+      position: absolute;
+      /* IMPORTANTE: Si exportaste ambas partes del sobre con el mismo ancho y alto total 
+         de caja, pon exactamente el mismo 'top' que .s1-sobre-trasero (4%). 
+         Si lo exportaste recortado a su propio borde, ajusta este 'top' alrededor de 38.5%. */
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 73.5%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .seccion-1 img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Activa la animación solo cuando las imágenes ya descargaron */
+    .seccion-1.animar .s1-foto {
+      animation-play-state: running;
+    }
+
+    @keyframes encajarFoto {
+      0% {
+        opacity: 0;
+        transform: translateY(-45px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+/* ==========================================================================
+       SECCIÓN 2: CANCIÓN, FECHA Y ADORNOS
+       ========================================================================== */
+    .seccion-2 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 720 / 820; /* Proporción exacta de la sección 2 */
+      overflow: hidden;
+    }
+
+    /* Elemento base para animaciones al hacer scroll en sección 2 */
+    .s2-flotar {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(-30px);
+      transition: opacity 3s cubic-bezier(0.22, 1, 0.36, 1), 
+                  transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .seccion-2.visible .s2-flotar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 1. Título: "Toca aquí para reproducir nuestra canción" */
+    .s2-titulo-cancion {
+      top: 5%;
+      left: 35%;
+      transform: translateX(-50%);
+      width: 30%;
+      z-index: 2;
+      transition-delay: 0.2s;
+    }
+
+    /* 2. Botón de música con nota musical (Estático, interactivo) */
+    .s2-btn-musica {
+      position: absolute;
+      top: 14%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9%;
+      z-index: 3;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .s2-btn-musica:hover {
+      transform: translateX(-50%) scale(1.08);
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+    }
+
+    /* 3. Ícono de ramitas bajo el botón de música (Estático) */
+    .s2-ramitas-bajo {
+      position: absolute;
+      top: 26.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 17%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 4. Fecha completa: "ENERO 09 2027, SÁBADO 16:30 PM" (Flotante con scroll) */
+    .s2-fecha-completa {
+      top: 31.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 62%;
+      z-index: 2;
+      transition-delay: 0.55s;
+    }
+
+    /* Sobrescribe la animación con scroll para la fecha */
+    .seccion-2.visible .s2-fecha-completa {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .s2-fecha-completa {
+      transform: translateX(-50%) translateY(-30px);
+    }
+
+    /* 5. Ícono de hojas en el borde derecho a la altura de la fecha (Estático) */
+    .s2-hojas-der {
+      position: absolute;
+      top: 19%;
+      right: 0;
+      width: 13%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 6. Ícono de plantas debajo de la fecha (Estático) */
+    .s2-plantas-abajo {
+      position: absolute;
+      top: 61%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+
+/* ==========================================================================
+       SECCIÓN 3: CUENTA REGRESIVA Y ADORNOS
+       ========================================================================== */
+    .seccion-3 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 720 / 750;
+      overflow: hidden;
+    }
+
+    /* Título FALTAN (Flotante) */
+    .s3-titulo {
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 24%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.1s;
+    }
+
+    /* Contenedor del contador y etiquetas (Flotante con fuente serif elegante) */
+    .s3-contador-box {
+      position: absolute;
+      top: 6%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 95%; /* Ampliamos un poco el ancho para que quepa holgado */
+      text-align: center;
+      z-index: 2;
+      opacity: 0;
+      font-family: "Times New Roman", Times, serif;
+      font-weight: bold; /* También puedes usar el valor numérico 700 */
+      color: #707070;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.3s;
+    }
+
+    .s3-numeros {
+      font-size: clamp(1.8rem, 7vw, 3.5rem);
+      font-weight: extra bold; /* <-- Negrita aplicada */
+      letter-spacing: 1px;
+      line-height: 1.1;
+      white-space: nowrap; /* <-- Evita que los segundos bajen de línea */
+    }
+
+	.s3-etiquetas {
+      display: flex;
+      justify-content: space-around;
+      width: 86%;
+      margin: 2px auto 0 auto;
+      font-size: clamp(0.65rem, 2vw, 0.95rem); /* Más pequeñas */
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Texto inferior: PARA EL INICIO DE NUESTRA HISTORIA... (Flotante) */
+    .s3-subtexto {
+      position: absolute;
+      top: 51%; /* Bajado del 48% al 51% */
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 78%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.5s;
+    }
+
+    /* Clase que activa las animaciones al hacer scroll en la sección 3 */
+    .seccion-3.visible .s3-titulo,
+    .seccion-3.visible .s3-contador-box,
+    .seccion-3.visible .s3-subtexto {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Hojitas debajo del texto (Estáticas) */
+    .s3-hojitas-centro {
+      position: absolute;
+      top: 61%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 38%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Hojas del borde izquierdo (Estáticas) */
+    .s3-hojas-izq {
+      position: absolute;
+      top: 21%;
+      left: 0;
+      width: 10%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+/* Texto inferior: PARA EL INICIO DE NUESTRA HISTORIA... (Flotante) */
+    .s3-subtexto {
+      position: absolute;
+      top: 47%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 78%; /* Ajusta este porcentaje si deseas que sea un poco más grande o pequeño */
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.5s;
+    }
+
+    .seccion-3.visible .s3-subtexto {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+
+/* ==========================================================================
+       SECCIÓN 4: TARJETAS DE INFORMACIÓN Y CONFIRMACIÓN
+       ========================================================================== */
+.seccion-4 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 720 / 740;
+      overflow: hidden;
+    }
+
+    /* Base común para las 3 tarjetas */
+    .s4-card {
+      position: absolute;
+      width: 45.5%; /* Ancho exacto para que entren 2 arriba con margen elegante */
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .s4-card img,
+    .s4-card a {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Tarjeta 1: Arriba Izquierda (Delay 0.2s) */
+    .s4-card-1 {
+      top: 0%;
+      left: 3.5%;
+      transform: translateY(-30px);
+      transition-delay: 0.2s;
+    }
+
+    /* Tarjeta 2: Arriba Derecha (Delay 0.5s) */
+    .s4-card-2 {
+      top: 0%;
+      right: 3.5%;
+      transform: translateY(-30px);
+      transition-delay: 0.5s;
+    }
+
+    /* Tarjeta 3: Abajo Centrada (Delay 0.8s) */
+    .s4-card-3 {
+      top: 54%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      transition-delay: 0.8s;
+    }
+
+    /* Activación al hacer scroll */
+    .seccion-4.visible .s4-card-1,
+    .seccion-4.visible .s4-card-2 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .seccion-4.visible .s4-card-3 {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+
+/* ==========================================================================
+       SECCIÓN 5: CIERRE, AGRADECIMIENTO Y FRANJA INFERIOR
+       ========================================================================== */
+    .seccion-5 {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 720 / 480;
+      overflow: hidden;
+    }
+
+    .seccion-5 img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* 1. Ícono de plantitas arriba al centro (Estático) */
+    .s5-plantas-arriba {
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 2. Título: ¡Gracias! (Flotante 2.5s) */
+    .s5-gracias {
+      position: absolute;
+      top: 23%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 58%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.2s;
+    }
+
+    /* 3. Texto: Tu presencia hace este día aún más especial (Flotante 2.5s) */
+    .s5-subtexto {
+      position: absolute;
+      top: 61%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      width: 65%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 2.5s cubic-bezier(0.22, 1, 0.36, 1), transform 2.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition-delay: 0.5s;
+    }
+
+    /* Activación de los textos flotantes al hacer scroll */
+    .seccion-5.visible .s5-gracias,
+    .seccion-5.visible .s5-subtexto {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 4. Ícono de hojitas borde derecho (Estático) */
+    .s5-hojas-der {
+      position: absolute;
+      top: 15%;
+      right: 0;
+      width: 15%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 5. Ícono de plantitas borde izquierdo inferior (Estático) */
+    .s5-plantas-izq {
+      position: absolute;
+      bottom: 5%; /* Queda apoyado justo encima de la franja gris */
+      left: 0;
+      width: 24%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 6. Franja gris cerrando toda la página bien pegada abajo (Estático) */
+    .s5-franja-gris {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+
+    /* ==========================================================================
+       AQUÍ AGREGAREMOS EL CSS DE LAS SECCIONES 2, 3, 4 Y 5
+       ========================================================================== */
+
+  </style>
+</head>
+<body>
+
+  <main class="landing-wrapper">
+
+    <!-- ==================== INICIO SECCIÓN 1 ==================== -->
+    <section class="seccion-1" id="seccion1">
+
+      <!-- Rama superior derecha (Estática) -->
+      <div class="s1-rama-superior">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-ESQUINA-03.svg" alt="">
+      </div>
+
+      <!-- Rama bajo el sobre (Estática) -->
+      <div class="s1-rama-inferior">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-BAJOELSOBRE-03.svg" alt="">
+      </div>
+
+      <!-- Parte inferior/trasera del sobre (Estática - detrás de las fotos) -->
+      <div class="s1-sobre-trasero">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-INFERIORSOBRE-03.svg" alt="Sobre trasero">
+      </div>
+
+      <!-- Foto izquierda (Flota de arriba hacia abajo y encaja en el sobre) -->
+      <div class="s1-foto s1-foto-izq">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-FOTO2-03.png" alt="Foto pareja 1">
+      </div>
+
+      <!-- Foto derecha (Flota de arriba hacia abajo y encaja en el sobre) -->
+      <div class="s1-foto s1-foto-der">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-FOTO1-03.png" alt="Foto pareja 2">
+      </div>
+
+      <!-- Parte superior/delantera del sobre con sello (Estática - encima de las fotos) -->
+      <div class="s1-sobre-frontal">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION1/SECCION1-SUPERIORSOBRE-03.svg" alt="Sobre delantero">
+      </div>
+
+    </section>
+    <!-- ==================== FIN SECCIÓN 1 ==================== -->
+
+
+<!-- ==================== SECCIÓN 2 ==================== -->
+    <section class="seccion-2" id="seccion2">
+      
+      <!-- Audio en bucle (oculto) -->
+      <audio id="musica-boda" loop>
+        <source src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/music.mp3" type="audio/mpeg">
+      </audio>
+
+      <!-- Título: "Toca aquí para reproducir nuestra canción" (Flotante) -->
+      <div class="s2-flotar s2-titulo-cancion">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-TOCAAQUI-03.svg" alt="Toca aquí para reproducir nuestra canción">
+      </div>
+
+      <!-- Botón de música interactivo (Estático) -->
+      <div class="s2-btn-musica" id="btnMusica" title="Reproducir música">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-ICONOMUSICA-03.svg" alt="Reproducir canción">
+      </div>
+
+      <!-- Ramitas bajo el botón (Estático) -->
+      <div class="s2-ramitas-bajo">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-BAJOELICONODEMUSICA-03.svg" alt="">
+      </div>
+
+      <!-- Fecha completa (Flotante) -->
+      <div class="s2-flotar s2-fecha-completa">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-FECHA-03.svg" alt="Enero 09 2027 Sábado 16:30 PM">
+      </div>
+
+      <!-- Hojas borde derecho (Estático) -->
+      <div class="s2-hojas-der">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-ICONOBORDEDERECHO-03.svg" alt="">
+      </div>
+
+      <!-- Plantas debajo de la fecha (Estático) -->
+      <div class="s2-plantas-abajo">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION2/SECCION2-ICONODEBAJODELAFECHA-03.svg" alt="">
+      </div>
+
+    </section>
+    <!-- ==================== FIN SECCIÓN 2 ==================== -->
+
+
+<!-- ==================== SECCIÓN 3 ==================== -->
+    <section class="seccion-3" id="seccion3">
+
+      <!-- Hojas borde izquierdo (Estático) -->
+      <div class="s3-hojas-izq">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION3/SECCION3-ICONOBORDEIZQUIERDO-03.svg" alt="">
+      </div>
+
+      <!-- Título: FALTAN (Flotante) -->
+      <div class="s3-titulo">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION3/SECCION3-FALTAN-03.svg" alt="Faltan">
+      </div>
+
+      <!-- Contador numérico y etiquetas en texto vivo (Flotante) -->
+      <div class="s3-contador-box">
+        <div class="s3-numeros" id="contadorNumeros">00 : 00 : 00 : 00</div>
+        <div class="s3-etiquetas">
+          <span>Días</span>
+          <span>Horas</span>
+          <span>Minutos</span>
+          <span>Segundos</span>
+        </div>
+      </div>
+
+      <!-- Texto inferior (Flotante) -->
+    <div class="s3-subtexto">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION3/SECCION3-PARAELINICIO-03.svg" alt="Para el inicio de nuestra historia para siempre">
+      </div>
+
+      <!-- Hojitas debajo del texto (Estático) -->
+      <div class="s3-hojitas-centro">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION3/SECCION3-ICONOBAJOELCONTADOR-03.svg" alt="">
+      </div>
+
+    </section>
+    <!-- ==================== FIN SECCIÓN 3 ==================== -->
+
+
+<!-- ==================== SECCIÓN 4 ==================== -->
+    <section class="seccion-4" id="seccion4">
+
+      <!-- Tarjeta 1: Confirma tu asistencia (Arriba Izquierda - Delay 0.2s) -->
+      <div class="s4-card s4-card-1">
+        <a href="https://wa.me/59160388545?text=Hola,%20quiero%20confirmar%20mi%20asistencia%20a%20la%20boda%20de%20Carlos%20y%20Carola." target="_blank" style="text-decoration: none;">
+          <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION4/SECCION4-TARJETACONFIRMACION-03.svg" alt="Confirma tu asistencia">
+        </a>
+      </div>
+
+      <!-- Tarjeta 2: Evento sólo para adultos (Arriba Derecha - Delay 0.5s) -->
+      <div class="s4-card s4-card-2">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION4/SECCION4-TARJETAADULTOS-03.svg" alt="Evento sólo para adultos">
+      </div>
+
+      <!-- Tarjeta 3: Próximamente tu invitación física (Abajo Centro - Delay 0.8s) -->
+      <div class="s4-card s4-card-3">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION4/SECCION4-TARJETAPROXIMAMENTE-03.svg" alt="Próximamente tu invitación física">
+      </div>
+
+    </section>
+    <!-- ==================== FIN SECCIÓN 4 ==================== -->
+
+
+
+<!-- ==================== SECCIÓN 5 ==================== -->
+    <section class="seccion-5" id="seccion5">
+
+      <!-- 1. Plantitas arriba (Estático) -->
+      <div class="s5-plantas-arriba">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-ICONOARRIBADEGRACIAS-03.svg" alt="">
+      </div>
+
+      <!-- 2. Título ¡Gracias! (Flotante 2.5s) -->
+      <div class="s5-gracias">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-GRACIAS-03.svg" alt="¡Gracias!">
+      </div>
+
+      <!-- 3. Subtexto: Tu presencia hace este día aún más especial (Flotante 2.5s) -->
+      <div class="s5-subtexto">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-TUPRESENCIA-03.svg" alt="Tu presencia hace este día aún más especial">
+      </div>
+
+      <!-- 4. Hojitas borde derecho (Estático) -->
+      <div class="s5-hojas-der">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-ICONOBORDEDERECHO-03.svg" alt="">
+      </div>
+
+      <!-- 5. Plantitas borde izquierdo (Estático) -->
+      <div class="s5-plantas-izq">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-ICONOBORDEIZQUIERDO-03.svg" alt="">
+      </div>
+
+      <!-- 6. Franja gris inferior pegada al borde (Estático) -->
+      <div class="s5-franja-gris">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/SECCION5/SECCION5-FRANJAPLOMAFINAL-03.svg" alt="">
+      </div>
+
+    </section>
+    <!-- ==================== FIN SECCIÓN 5 ==================== -->
+
+
+    <!-- ==========================================================================
+         AQUÍ COLOCAREMOS EL HTML DE LA SECCIÓN 2 (Canción y Fecha)
+         ========================================================================== -->
+
+
+    <!-- ==========================================================================
+         AQUÍ COLOCAREMOS EL HTML DE LA SECCIÓN 3 (Cuenta regresiva)
+         ========================================================================== -->
+
+
+    <!-- ==========================================================================
+         AQUÍ COLOCAREMOS EL HTML DE LA SECCIÓN 4 (Tarjetas de confirmación)
+         ========================================================================== -->
+
+
+    <!-- ==========================================================================
+         AQUÍ COLOCAREMOS EL HTML DE LA SECCIÓN 5 (Agradecimiento final)
+         ========================================================================== -->
+
+  </main>
+
+  <script>
+    // Espera a que las imágenes de la Sección 1 descarguen antes de iniciar la animación
+    window.addEventListener("load", () => {
+      const seccion1 = document.getElementById("seccion1");
+      const imagenesS1 = Array.from(seccion1.querySelectorAll("img"));
+
+      const promesas = imagenesS1.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+
+      Promise.all(promesas).then(() => {
+        setTimeout(() => {
+          seccion1.classList.add("animar");
+        }, 120);
+      });
+    });
+
+
+
+// 1. Animación de entrada de la Sección 1 al cargar la página
+    window.addEventListener("load", () => {
+      const seccion1 = document.getElementById("seccion1");
+      const imagenesS1 = Array.from(seccion1.querySelectorAll("img"));
+
+      const promesas = imagenesS1.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      });
+
+      Promise.all(promesas).then(() => {
+        setTimeout(() => { seccion1.classList.add("animar"); }, 120);
+      });
+    });
+
+    // 2. Activación por scroll para la Sección 2 (y preparativo para las demás)
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(document.getElementById("seccion2"));
+
+    // 3. Control del reproductor de música en bucle (loop) al hacer click
+    const btnMusica = document.getElementById("btnMusica");
+    const audioBoda = document.getElementById("musica-boda");
+    let reproduciendo = false;
+
+    btnMusica.addEventListener("click", () => {
+      if (!reproduciendo) {
+        audioBoda.play().then(() => {
+          reproduciendo = true;
+          btnMusica.style.transform = "translateX(-50%) scale(1.12)";
+          setTimeout(() => { btnMusica.style.transform = "translateX(-50%) scale(1)"; }, 200);
+        }).catch(err => {
+          console.log("Error al reproducir audio: ", err);
+        });
+      } else {
+        // Opcional: si vuelve a tocarlo, se pausa. Si prefieres que nunca se detenga, puedes quitar este else.
+        audioBoda.pause();
+        reproduciendo = false;
+      }
+    });
+
+
+// Activa la sección 3 con el scroll
+    observer.observe(document.getElementById("seccion2"));
+    observer.observe(document.getElementById("seccion3")); /* <-- NUEVA LÍNEA */
+
+    // Lógica de la cuenta regresiva en tiempo real hasta el 9 de enero de 2027 a las 16:30:00
+    const fechaBoda = new Date("2027-01-09T16:30:00").getTime();
+    const txtContador = document.getElementById("contadorNumeros");
+
+    function actualizarContador() {
+      const ahora = new Date().getTime();
+      const diferencia = fechaBoda - ahora;
+
+      if (diferencia <= 0) {
+        txtContador.innerText = "¡LLEGÓ EL DÍA!";
+        return;
+      }
+
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+      // Formato con ceros a la izquierda (ej: 05, 09)
+      const d = String(dias).padStart(2, '0');
+      const h = String(horas).padStart(2, '0');
+      const m = String(minutos).padStart(2, '0');
+      const s = String(segundos).padStart(2, '0');
+
+      txtContador.innerText = `${d} : ${h} : ${m} : ${s}`;
+    }
+
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+
+
+observer.observe(document.getElementById("seccion2"));
+    observer.observe(document.getElementById("seccion3"));
+    observer.observe(document.getElementById("seccion4"));
+
+
+observer.observe(document.getElementById("seccion2"));
+    observer.observe(document.getElementById("seccion3"));
+    observer.observe(document.getElementById("seccion4"));
+    observer.observe(document.getElementById("seccion5")); /* <-- ÚLTIMA LÍNEA */
+
+    /* ==========================================================================
+       AQUÍ AGREGAREMOS EL SCRIPT DE SCROLL Y FUNCIONES DE LAS SIGUIENTES SECCIONES
+       ========================================================================== */
+  </script>
+
+</body>
+</html>

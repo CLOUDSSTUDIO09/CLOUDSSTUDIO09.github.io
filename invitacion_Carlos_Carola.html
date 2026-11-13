@@ -19,13 +19,8 @@
       align-items: center;
       overflow-x: hidden;
 
-      /* FONDO ALEJADO (TEXTURA MÁS FINA) */
+      /* FONDO GENERAL DE LA PÁGINA */
       background-color: #ececec;
-      background-image: url("https://tu-nube.com/ruta/fondo.jpg");
-      background-repeat: repeat;
-      background-position: center;
-      /* A mayor tamaño en píxeles, más "alejada" y fina se ve la textura del papel */
-      background-size: 1800px auto; 
     }
 
     /* Contenedor maestro: mantiene la proporción exacta de la mesa de trabajo (720x1000) */
@@ -38,13 +33,24 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
     }
 
-   /* Clase base para todos los objetos SVG posicionados */
+    /* CORRECCIÓN: Fondo ajustado para que cubra todo el lienzo perfectamente */
+    .invitacion-canvas > img.fondo-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* Clase base para todos los objetos SVG posicionados */
     .svg-item {
       position: absolute;
       transform: translateX(-50%);
       opacity: 0;
       animation: flotarSuave 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-      animation-play-state: paused; /* <-- AGREGAR ESTA LÍNEA */
+      animation-play-state: paused;
     }
 
     .svg-item img {
@@ -71,7 +77,7 @@
       animation-delay: 0.5s;
     }
 
-    /* 3. Sobre blanco con sombra (sin sello) */
+    /* 3. Sobre blanco con sombra */
     .sobre-svg {
       top: 41.2%;
       left: 50%;
@@ -81,7 +87,6 @@
     }
 
     /* 4. Sello celeste perfectamente centrado y con enlace a la segunda página */
- /* 4. Sello celeste perfectamente centrado y con enlace a la segunda página */
     .sello-link {
       position: absolute;
       top: 60.5%;
@@ -98,6 +103,7 @@
       animation-play-state: paused;
     }
 
+    .invitacion-canvas.listo .svg-item,
     .invitacion-canvas.listo .sello-link {
       animation-play-state: running;
     }
@@ -114,6 +120,7 @@
       transform: scale(1.07);
       filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18));
     }
+
     /* 5. Pie: "RESERVAMOS 1 CUPO PARA TI" */
     .cupo-svg {
       top: 91.5%;
@@ -148,44 +155,44 @@
   </style>
 </head>
 <body>
- <main class="invitacion-canvas">
+
+  <main class="invitacion-canvas">
     
-    <!-- FONDO -->
-    <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/fondo.jpg">
+    <!-- FONDO CORREGIDO -->
+    <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/fondo.jpg" class="fondo-canvas" alt="Fondo">
 
     <!-- TÍTULO: "UNA CARTA DE AMOR DE:" -->
     <div class="svg-item titulo-svg">
-      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/titulo-03.svg">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/titulo-03.svg" alt="Título">
     </div>
 
     <!-- NOMBRES: "Carlos & Carola" -->
     <div class="svg-item nombres-svg">
-      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/nombres-03.svg">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/nombres-03.svg" alt="Carlos & Carola">
     </div>
 
     <!-- SOBRE BLANCO CON SOMBRA -->
     <div class="svg-item sobre-svg">
-      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/sobre-03.svg">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/sobre-03.svg" alt="Sobre">
     </div>
 
-<!-- SELLO CELESTE CON ENLACE A LA SEGUNDA PÁGINA -->
+    <!-- SELLO CELESTE CON ENLACE A LA SEGUNDA PÁGINA -->
     <a href="invitacion_Carlos_Carola2.html" class="sello-link">
-      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/sello-03.svg" alt="Abrir invitación">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/sello-03.svg" alt="Sello de invitación">
     </a>
 
     <!-- TEXTO INFERIOR: "RESERVAMOS 1 CUPO PARA TI" -->
     <div class="svg-item cupo-svg">
-      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/cupo-03.svg">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina1/cupo-03.svg" alt="Reservamos 1 cupo para ti">
     </div>
 
   </main>
 
-<script>
+  <script>
     window.addEventListener("load", () => {
       const lienzo = document.querySelector(".invitacion-canvas");
       const imagenes = Array.from(lienzo.querySelectorAll("img"));
 
-      // Verifica que cada SVG haya terminado de decodificarse
       const promesas = imagenes.map(img => {
         if (img.complete) return Promise.resolve();
         return new Promise(resolve => {
@@ -195,7 +202,6 @@
       });
 
       Promise.all(promesas).then(() => {
-        // Pequeña pausa de 100ms para asegurar suavidad en el primer fotograma
         setTimeout(() => {
           lienzo.classList.add("listo");
         }, 100);
@@ -205,5 +211,3 @@
 
 </body>
 </html>
-
-  

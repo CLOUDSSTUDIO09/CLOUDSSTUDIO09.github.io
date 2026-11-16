@@ -203,13 +203,13 @@
       let respuesta = "";
 
       if (opcion === "si") {
-        respuesta = "sí asistiré a la boda. Muchas Gracias";
+        respuesta = "sí asistiré a la boda.";
       } else {
-        respuesta = "lamentablemente no podré asistir a la boda. Muchas Gracias";
+        respuesta = "lamentablemente no podré asistir a la boda.";
       }
 
       // Mensaje exacto solicitado
-      const mensaje = `Hola soy ${nombre}, ${respuesta}`;
+      const mensaje = `Hola soy ${nombre}, ${respuesta}, gracias`;
 
       // Redirección directa a WhatsApp con el mensaje listo para enviar
       const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;

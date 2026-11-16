@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmar Asistencia - Carlos & Carola</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      background-color: #ececec;
+    }
+
+    /* Contenedor maestro: mantiene la proporción exacta (720x1000) */
+    .invitacion-canvas {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 720 / 1000;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Fondo enlazado */
+    .fondo-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* Clase base para animación de entrada suave */
+    .elemento-flotante {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: flotarSuave 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-play-state: paused;
+    }
+
+    .invitacion-canvas.listo .elemento-flotante {
+      animation-play-state: running;
+    }
+
+    /* 1. SVG Texto: "Coloca tu nombre y apellido aquí" */
+    .label-nombre-svg {
+      top: 28%; /* Ajusta este porcentaje según tu mesa de trabajo */
+      width: 65%;
+      z-index: 2;
+      animation-delay: 0.2s;
+    }
+    .label-nombre-svg img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 2. Campo de texto real donde el invitado escribe */
+    .caja-input {
+      top: 38%; /* Ajusta este porcentaje para que quede justo debajo del texto SVG */
+      width: 74%;
+      z-index: 3;
+      animation-delay: 0.4s;
+    }
+
+    .input-nombre {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: #4a4a4a;
+      background-color: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid #b8b8b8;
+      border-radius: 30px;
+      text-align: center;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-nombre:focus {
+      background-color: #ffffff;
+      border-color: #6b8e9b;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 3. Contenedor de los dos botones SVG ("Sí asistiré" y "No asistiré") */
+    .grupo-botones {
+      top: 52%; /* Ajusta la altura vertical */
+      width: 76%;
+      display: flex;
+      justify-content: space-between;
+      gap: 4%;
+      z-index: 3;
+      animation-delay: 0.6s;
+    }
+
+    /* Estilo de botón transparente para envolver tus SVG */
+    .btn-svg {
+      width: 48%;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform 0.25s ease, filter 0.25s ease;
+    }
+
+    .btn-svg img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .btn-svg:hover,
+    .btn-svg:active {
+      transform: scale(1.05);
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.15));
+    }
+
+    /* Animación de entrada */
+    @keyframes flotarSuave {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -25px);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="invitacion-canvas">
+
+    <!-- 1. FONDO ENLAZADO -->
+    <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/fondo3.jpg" class="fondo-canvas" alt="Fondo">
+
+    <!-- 2. TEXTO SVG: "Coloca tu nombre y apellido aquí" -->
+    <div class="elemento-flotante label-nombre-svg">
+      <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/TUNOMBRE-03.svg" alt="Coloca tu nombre y apellido aquí">
+    </div>
+
+    <!-- 3. INPUT DE TEXTO PARA ESCRIBIR EL NOMBRE -->
+    <div class="elemento-flotante caja-input">
+      <input type="text" id="nombreInvitado" class="input-nombre" placeholder="Nombre y Apellido" autocomplete="off">
+    </div>
+
+    <!-- 4. BOTONES SVG INTERACTIVOS -->
+    <div class="elemento-flotante grupo-botones">
+      
+      <!-- Botón SÍ ASISTIRÉ -->
+      <button type="button" class="btn-svg" onclick="confirmarWhatsApp('si')">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/BOTONSI-03.svg" alt="Sí asistiré">
+      </button>
+
+      <!-- Botón NO ASISTIRÉ -->
+      <button type="button" class="btn-svg" onclick="confirmarWhatsApp('no')">
+        <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/BOTONNO-03.svg" alt="No asistiré">
+      </button>
+
+    </div>
+
+  </main>
+
+  <script>
+    // Activa la animación suavemente al cargar
+    window.addEventListener("load", () => {
+      const lienzo = document.querySelector(".invitacion-canvas");
+      setTimeout(() => {
+        lienzo.classList.add("listo");
+      }, 50);
+    });
+
+    // Función que arma el mensaje y abre WhatsApp según el botón presionado
+    function confirmarWhatsApp(opcion) {
+      const input = document.getElementById("nombreInvitado");
+      const nombre = input.value.trim();
+
+      // Si no escribió su nombre, le avisa antes de abrir WhatsApp
+      if (nombre === "") {
+        alert("Por favor, coloca tu nombre y apellido antes de confirmar.");
+        input.focus();
+        return;
+      }
+
+      const telefono = "59160388545";
+      let respuesta = "";
+
+      if (opcion === "si") {
+        respuesta = "sí asistiré a la boda.";
+      } else {
+        respuesta = "lamentablemente no podré asistir a la boda.";
+      }
+
+      // Mensaje exacto solicitado
+      const mensaje = `Hola soy ${nombre}, ${respuesta}`;
+
+      // Redirección directa a WhatsApp con el mensaje listo para enviar
+      const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+      window.location.href = url;
+    }
+  </script>
+
+</body>
+</html>

@@ -58,7 +58,7 @@
 
     /* 1. SVG Texto: "Coloca tu nombre y apellido aquí" */
     .label-nombre-svg {
-      top: 28%;
+      top: 28%; /* Ajusta este porcentaje según tu mesa de trabajo */
       width: 65%;
       z-index: 2;
       animation-delay: 0.2s;
@@ -69,9 +69,9 @@
       display: block;
     }
 
-    /* 2. Campo de texto real */
+    /* 2. Campo de texto real donde el invitado escribe */
     .caja-input {
-      top: 38%;
+      top: 38%; /* Ajusta este porcentaje para que quede justo debajo del texto SVG */
       width: 74%;
       z-index: 3;
       animation-delay: 0.4s;
@@ -97,9 +97,9 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
-    /* 3. Contenedor de los dos botones SVG */
+    /* 3. Contenedor de los dos botones SVG ("Sí asistiré" y "No asistiré") */
     .grupo-botones {
-      top: 52%;
+      top: 52%; /* Ajusta la altura vertical */
       width: 76%;
       display: flex;
       justify-content: space-between;
@@ -108,6 +108,7 @@
       animation-delay: 0.6s;
     }
 
+    /* Estilo de botón transparente para envolver tus SVG */
     .btn-svg {
       width: 48%;
       background: none;
@@ -130,35 +131,6 @@
       filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.15));
     }
 
-    /* 4. Estilo para la pantalla de "YA RESPONDISTE" */
-    .mensaje-ya-respondio {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%;
-      text-align: center;
-      z-index: 10;
-      background: rgba(255, 255, 255, 0.92);
-      padding: 30px 20px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      display: none; /* Oculto por defecto */
-    }
-
-    .mensaje-ya-respondio h2 {
-      font-size: 1.4rem;
-      color: #333;
-      margin-bottom: 10px;
-      font-family: serif;
-    }
-
-    .mensaje-ya-respondio p {
-      font-size: 1rem;
-      color: #666;
-      line-height: 1.5;
-    }
-
     /* Animación de entrada */
     @keyframes flotarSuave {
       0% {
@@ -174,23 +146,23 @@
 </head>
 <body>
 
-  <main class="invitacion-canvas" id="canvasPrincipal">
+  <main class="invitacion-canvas">
 
     <!-- 1. FONDO ENLAZADO -->
     <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/fondo3.jpg" class="fondo-canvas" alt="Fondo">
 
     <!-- 2. TEXTO SVG: "Coloca tu nombre y apellido aquí" -->
-    <div class="elemento-flotante label-nombre-svg" id="bloqueForm">
+    <div class="elemento-flotante label-nombre-svg">
       <img src="https://filedn.com/lbCnADCejUvubTC5NNB6zzX/invitacion_tio_edy/pagina3/TUNOMBRE-03.svg" alt="Coloca tu nombre y apellido aquí">
     </div>
 
-    <!-- 3. INPUT DE TEXTO -->
-    <div class="elemento-flotante caja-input" id="bloqueInput">
+    <!-- 3. INPUT DE TEXTO PARA ESCRIBIR EL NOMBRE -->
+    <div class="elemento-flotante caja-input">
       <input type="text" id="nombreInvitado" class="input-nombre" placeholder="Nombre y Apellido" autocomplete="off">
     </div>
 
     <!-- 4. BOTONES SVG INTERACTIVOS -->
-    <div class="elemento-flotante grupo-botones" id="bloqueBotones">
+    <div class="elemento-flotante grupo-botones">
       
       <!-- Botón SÍ ASISTIRÉ -->
       <button type="button" class="btn-svg" onclick="confirmarWhatsApp('si')">
@@ -204,41 +176,23 @@
 
     </div>
 
-    <!-- 5. MENSAJE DE "YA RESPONDISTE" (Aparece si ya envió su respuesta antes) -->
-    <div id="pantallaYaRespondio" class="mensaje-ya-respondio">
-      <h2>¡Gracias por responder!</h2>
-      <p>Ya has registrado tu asistencia anteriormente para esta boda. ¡Te esperamos! ✨</p>
-    </div>
-
   </main>
 
   <script>
-    // Al cargar la página, verificamos si este dispositivo ya respondió antes
+    // Activa la animación suavemente al cargar
     window.addEventListener("load", () => {
-      const yaRespondio = localStorage.getItem("boda_respondido");
-
-      if (yaRespondio === "true") {
-        // Si ya respondió, ocultamos el formulario y mostramos el aviso
-        document.getElementById("bloqueForm").style.display = "none";
-        document.getElementById("bloqueInput").style.display = "none";
-        document.getElementById("bloqueBotones").style.display = "none";
-        
-        const pantallaAviso = document.getElementById("pantallaYaRespondio");
-        pantallaAviso.style.display = "block";
-      }
-
-      // Activa la animación suave del lienzo
       const lienzo = document.querySelector(".invitacion-canvas");
       setTimeout(() => {
         lienzo.classList.add("listo");
       }, 50);
     });
 
-    // Función que arma el mensaje, guarda el estado y abre WhatsApp
+    // Función que arma el mensaje y abre WhatsApp según el botón presionado
     function confirmarWhatsApp(opcion) {
       const input = document.getElementById("nombreInvitado");
       const nombre = input.value.trim();
 
+      // Si no escribió su nombre, le avisa antes de abrir WhatsApp
       if (nombre === "") {
         alert("Por favor, coloca tu nombre y apellido antes de confirmar.");
         input.focus();
@@ -254,13 +208,10 @@
         respuesta = "lamentablemente no podré asistir a la boda.";
       }
 
-      // Mensaje exacto
+      // Mensaje exacto solicitado
       const mensaje = `Hola soy ${nombre}, ${respuesta}`;
 
-      // 1. Guardamos en la memoria del navegador que ya respondió
-      localStorage.setItem("boda_respondido", "true");
-
-      // 2. Redirección directa a WhatsApp
+      // Redirección directa a WhatsApp con el mensaje listo para enviar
       const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
       window.location.href = url;
     }
